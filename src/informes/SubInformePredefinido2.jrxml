@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SubInformePredefinido2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="389822fb-df79-4c6f-9b80-2bef00385dda">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Adapter_ProyectoDAM"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="ID_NUMERO" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT cod_libro,
+	fecha_adquisicion,
+	estado_libro,
+	id_numero
+FROM ejemplar
+WHERE 
+	 id_numero = $P{ID_NUMERO}]]>
+	</queryString>
+	<field name="cod_libro" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cod_libro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ejemplar"/>
+	</field>
+	<field name="fecha_adquisicion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_adquisicion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ejemplar"/>
+	</field>
+	<field name="estado_libro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estado_libro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ejemplar"/>
+	</field>
+	<field name="id_numero" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_numero"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ejemplar"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="0535e852-09b4-464f-94d0-92a9706f1360">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="95be2ca5-2ff9-41cf-9ac1-bf7733471d19"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fecha_adquisicion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="100" height="20" uuid="314115e1-7369-49b0-a101-ed4ce0015cf3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f536a9cd-b2c7-43e0-a6c0-0d2f6c659282"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{estado_libro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
