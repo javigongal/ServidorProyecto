@@ -33,18 +33,31 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="100" height="20" uuid="0535e852-09b4-464f-94d0-92a9706f1360">
+				<reportElement x="414" y="0" width="115" height="20" uuid="0535e852-09b4-464f-94d0-92a9706f1360">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="95be2ca5-2ff9-41cf-9ac1-bf7733471d19"/>
 				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_adquisicion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="0" width="100" height="20" uuid="314115e1-7369-49b0-a101-ed4ce0015cf3">
+				<reportElement x="270" y="0" width="120" height="20" uuid="314115e1-7369-49b0-a101-ed4ce0015cf3">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f536a9cd-b2c7-43e0-a6c0-0d2f6c659282"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{estado_libro}]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{estado_libro}.equalsIgnoreCase("0"))?"NUEVO":(($F{estado_libro}.equalsIgnoreCase("1"))?"CASI NUEVO":(($F{estado_libro}.equalsIgnoreCase("2"))?"ALGO DESGASTADO":(($F{estado_libro}.equalsIgnoreCase("3"))?"BASTANTE DESGASTADO":"DEPLORABLE")))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="150" height="20" uuid="4af95ef3-d284-4fec-ba4c-c4f6827fa75a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_libro}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

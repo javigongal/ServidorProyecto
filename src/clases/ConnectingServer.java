@@ -8,7 +8,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,7 +18,6 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +27,6 @@ import java.util.Properties;
 import java.sql.Statement;
 import javax.imageio.ImageIO;
 import org.imgscalr.Scalr;
-import java.time.LocalDate;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -71,7 +68,7 @@ public class ConnectingServer {
     public static ObjectOutputStream salida;
 
     public static void main(String[] args) {
-
+        //No lo uso en el servidor, pero está creado
         Properties archivoProperties = new Properties();
         InputStream ficheroConfiguracion = null;
 
@@ -470,7 +467,7 @@ public class ConnectingServer {
                             System.out.println("Alta Ejemplar");
                             infoDevolver = new HashMap();
                             e = (Ejemplar) objetos.get("Ejemplar");
-                            
+
                             try {
                                 String consultaSQL = "INSERT INTO PROYECTO_DAM.Ejemplar ("
                                         + "fecha_adquisicion, estado_libro, id_numero) "
@@ -575,10 +572,17 @@ public class ConnectingServer {
                             break;
                         case PREDEFINIDO_1:
                             System.out.println("Informe predefinido 1");
+                            String informe = "";
+                            String locale = (String) objetos.get("LOCALE");
+                            if(locale.equals("ES")){
+                                informe = "/informes/InformePredefinido1.jrxml";
+                            } else if(locale.equals("GL")){
+                                informe = "/informes/InformePredefinido1_gal.jrxml";
+                            }
                             infoDevolver = new HashMap();
-                            String informe = "/informes/InformePredefinido1.jrxml";
-                            InputStream resourceAsStream = 
-                                    ConnectingServer.class.getResourceAsStream("../imagenes/Logo_TodoColecciones.png");
+                            InputStream resourceAsStream
+                                    //Linea de cambio (la ruta)
+                                    = ConnectingServer.class.getResourceAsStream("/imagenes/Logo_TodoColecciones.png");
                             Image imagen = ImageIO.read(resourceAsStream);
                             try {
                                 HashMap param = new HashMap();
@@ -588,7 +592,7 @@ public class ConnectingServer {
                                 JasperPrint impresion = JasperFillManager.fillReport(
                                         reporte, param, Conexion.getConexion());
                                 infoDevolver.put("PREDEFINIDO_1", impresion);
-                                
+
                                 System.out.println("Enviado");
                                 salida.writeObject(infoDevolver);
                             } catch (JRException ex) {
@@ -599,10 +603,19 @@ public class ConnectingServer {
                             System.out.println("Informe predefinido 2");
                             infoDevolver = new HashMap();
                             //No me gusta el scope de esta variable
+                            locale = (String) objetos.get("LOCALE");
                             informe = "/informes/InformePredefinido2.jrxml";
-                            //Y el de esta, MENOS todavía
-                            String subinforme = "/informes/SubInformePredefinido2.jrxml";
-
+                            String subinforme = "";
+                            if(locale.equals("ES")){
+                                informe = "/informes/InformePredefinido2.jrxml";
+                                subinforme = "/informes/SubInformePredefinido2.jrxml";
+                            } else if(locale.equals("GL")){
+                                informe = "/informes/InformePredefinido2_gal.jrxml";
+                                subinforme = "/informes/SubInformePredefinido2_gal.jrxml";
+                            }
+                            resourceAsStream
+                                    = ConnectingServer.class.getResourceAsStream("/imagenes/Logo_TodoColecciones.png");
+                            imagen = ImageIO.read(resourceAsStream);
                             HashMap param = new HashMap();
 
                             try {
@@ -611,6 +624,7 @@ public class ConnectingServer {
                                 JasperReport subreporte = JasperCompileManager.compileReport(
                                         ConnectingServer.class.getResourceAsStream(subinforme));
 
+                                param.put("LOGO", imagen);
                                 param.put("SUBINFORME", subreporte);
 
                                 JasperPrint impresion = JasperFillManager.fillReport(
@@ -626,15 +640,26 @@ public class ConnectingServer {
                         case PERSONALIZADO_1:
                             System.out.print("Informe personalizado 1: ");
                             infoDevolver = new HashMap();
+                            locale = (String) objetos.get("LOCALE");
                             informe = "/informes/InformePersonalizado1.jrxml";
+                            if(locale.equals("ES")){
+                                informe = "/informes/InformePersonalizado1.jrxml";
+                            } else if(locale.equals("GL")){
+                                informe = "/informes/InformePersonalizado1_gal.jrxml";
+                            }
+                            
                             int ano_lanzamiento = (int) objetos.get("AnoLanzamiento");
                             System.out.println(ano_lanzamiento);
+                            resourceAsStream
+                                    = ConnectingServer.class.getResourceAsStream("/imagenes/Logo_TodoColecciones.png");
+                            imagen = ImageIO.read(resourceAsStream);
 
                             param = new HashMap();
                             try {
+                                param.put("LOGO", imagen);
+                                param.put("ANO_LANZAMIENTO", ano_lanzamiento);
                                 JasperReport reporte = JasperCompileManager.compileReport(
                                         ConnectingServer.class.getResourceAsStream(informe));
-                                param.put("ANO_LANZAMIENTO", ano_lanzamiento);
 
                                 JasperPrint impresion = JasperFillManager.fillReport(
                                         reporte, param, Conexion.getConexion());
@@ -647,7 +672,31 @@ public class ConnectingServer {
                             }
                             break;
                         case PERSONALIZADO_2:
-
+                            infoDevolver = new HashMap();
+                            locale = (String) objetos.get("LOCALE");
+                            informe = "/informes/InformePersonalizado2.jrxml";
+                            if(locale.equals("ES")){
+                                informe = "/informes/InformePersonalizado2.jrxml";
+                            } else if(locale.equals("GL")){
+                                informe = "/informes/InformePersonalizado2_gal.jrxml";
+                            }
+                            String estado_ejemplar = (String) objetos.get("ESTADO_EJEMPLAR");
+                            resourceAsStream
+                                    = ConnectingServer.class.getResourceAsStream("/imagenes/Logo_TodoColecciones.png");
+                            imagen = ImageIO.read(resourceAsStream);
+                            param = new HashMap();
+                            try {
+                                param.put("LOGO", imagen);
+                                param.put("ESTADO_EJEMPLAR", estado_ejemplar);
+                                JasperReport reporte = JasperCompileManager.compileReport(
+                                        ConnectingServer.class.getResourceAsStream(informe));
+                                JasperPrint impresion = JasperFillManager.fillReport(
+                                        reporte, param, Conexion.getConexion());
+                                infoDevolver.put("PERSONALIZADO_2", impresion);
+                                salida.writeObject(infoDevolver);
+                            } catch (JRException ex) {
+                                ex.printStackTrace();
+                            }
                             break;
                         case BUSQUEDA_COLECCION:
                             System.out.println("Solicitud de búsqueda por colecciones");
@@ -776,7 +825,7 @@ public class ConnectingServer {
 
                                 //Una vez recogidos los objetos Coleccion y Numeros
                                 //procedo a recoger e introducir en el hashMap la imagen
-                                File file = new File(n.getPortada());
+                                File file = new File("/"+n.getPortada());
                                 try {
                                     BufferedImage bufferedImage = ImageIO.read(file);
 

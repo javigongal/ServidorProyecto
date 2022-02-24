@@ -50,7 +50,7 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{estado_libro}.equalsIgnoreCase("0"))?"NUEVO":(($F{estado_libro}.equalsIgnoreCase("1"))?"CASI NUEVO":(($F{estado_libro}.equalsIgnoreCase("2"))?"ALGO DESGASTADO":(($F{estado_libro}.equalsIgnoreCase("3"))?"BASTANTE DESGASTADO":"DEPLORABLE")))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{estado_libro}.equalsIgnoreCase("0"))?"NOVO":(($F{estado_libro}.equalsIgnoreCase("1"))?"CASE NOVO":(($F{estado_libro}.equalsIgnoreCase("2"))?"ALGO DESGASTADO":(($F{estado_libro}.equalsIgnoreCase("3"))?"BASTANTE DESGASTADO":"DEPLORABLE")))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="150" height="20" uuid="4af95ef3-d284-4fec-ba4c-c4f6827fa75a"/>
